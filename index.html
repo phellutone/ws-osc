@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <button id="list">list</button>
+    <input type="text" id="address">
+    <button id="add">add</button>
+    <button id="remove">remove</button>
+    <br>
+    <input type="text" id="set">
+    <button id="load">load</button>
+    <button id="play">play</button>
+    <button id="pause">pause</button>
+    <button id="stop">stop</button>
+    <br>
+    <input type="text" id="pos">
+    <button id="time">time</button>
+    <button id="frame">frame</button>
+    <br>
+    <div id="msg"></div>
+    <script>
+      var loc = window.location, new_uri
+      if (loc.protocol === "https:") {
+          new_uri = "wss:";
+      } else {
+          new_uri = "ws:";
+      }
+      new_uri += "//"+loc.host+loc.pathname
+      let ws = new WebSocket(new_uri)
+      console.log(ws.url)
+
+      ws.onmessage = event => {
+        document.getElementById("msg").innerHTML = event.data.replace(/\n/g, '<br>')
+      }
+
+      document.getElementById("list").addEventListener("click", () => {
+        ws.send(JSON.stringify({
+          pfx: 'list',
+          data: []
+        }))
+      })
+      document.getElementById("add").addEventListener("click", () => {
+        var uri = document.getElementById("address").value
+        var data = JSON.stringify({
+          pfx: 'add',
+          data: [
+            uri.split(":")[0],
+            parseInt(uri.split(":")[1].split("/")[0]),
+            uri.split("/")[1]
+          ]
+        })
+        console.log(data)
+        ws.send(data)
+      })
+      document.getElementById("remove").addEventListener("click", () => {
+        var uri = document.getElementById("address").value
+        var data = JSON.stringify({
+          pfx: 'remove',
+          data: [
+            uri.split(":")[0],
+            parseInt(uri.split(":")[1].split("/")[0]),
+            uri.split("/")[1]
+          ]
+        })
+        console.log(data)
+        ws.send(data)
+      })
+      document.getElementById("load").addEventListener("click", () => {
+        ws.send(JSON.stringify({
+          pfx: 'control',
+          data: [
+            'load',
+            parseInt(document.getElementById("set").value)
+          ]
+        }))
+      })
+      document.getElementById("play").addEventListener("click", () => {
+        ws.send(JSON.stringify({
+          pfx: 'control',
+          data: [
+            'play',
+            parseInt(document.getElementById("set").value)
+          ]
+        }))
+      })
+      document.getElementById("pause").addEventListener("click", () => {
+        ws.send(JSON.stringify({
+          pfx: 'control',
+          data: [
+            'pause',
+            parseInt(document.getElementById("set").value)
+          ]
+        }))
+      })
+      document.getElementById("stop").addEventListener("click", () => {
+        ws.send(JSON.stringify({
+          pfx: 'control',
+          data: [
+            'stop',
+            parseInt(document.getElementById("set").value)
+          ]
+        }))
+      })
+      document.getElementById("time").addEventListener("click", () => {
+        ws.send(JSON.stringify({
+          pfx: 'control',
+          data: [
+            'time',
+            parseInt(document.getElementById("pos").value)
+          ]
+        }))
+      })
+      document.getElementById("frame").addEventListener("click", () => {
+        ws.send(JSON.stringify({
+          pfx: 'control',
+          data: [
+            'frame',
+            parseInt(document.getElementById("pos").value)
+          ]
+        }))
+      })
+    </script>
+  </body>
+</html>

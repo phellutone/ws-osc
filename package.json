@@ -1,0 +1,19 @@
+{
+  "name": "ws-osc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bufferutil": "^4.0.4",
+    "express": "^4.17.1",
+    "node-osc": "^6.1.6",
+    "utf-8-validate": "^5.0.6",
+    "ws": "^8.2.3"
+  }
+}
