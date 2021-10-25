@@ -13,6 +13,9 @@ const httpServer = express()
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
 const wsServer = new Server({ server: httpServer });
 
+/**
+ * @type {Array<{ client: Client, host: String, port: String, address: String }>}
+ */
 var oscClientList = [];
 
 wsServer.on('connection', (ws, req) => {
